@@ -1,0 +1,17 @@
+# Netlify build configuration for the Student Health Record frontend
+
+[build]
+  # This is the command Netlify will run to build your site.
+  # It installs dependencies and then runs our Tailwind CSS build script.
+  command = "npm install && npm run tailwind:build"
+  
+  # This is the directory that contains the final, built website.
+  # Since our project uses plain HTML files, this is the root directory.
+  publish = "/"
+
+# Redirect rule to handle Single Page Application (SPA) routing,
+# ensuring that direct navigation to subpages works correctly.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
