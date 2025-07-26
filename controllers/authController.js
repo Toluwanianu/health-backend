@@ -8,12 +8,35 @@ const sendEmail = require('../utils/sendEmail');
 // POST /api/auth/admin/login
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
+    
+    // --- TEMPORARY LOGGING ---
+    console.log("--- Admin Login Attempt ---");
+    console.log("Received Username:", username);
+    console.log("Received Password:", password);
+    // --- END LOGGING ---
+
     try {
         // Find the admin by their username
         const admin = await Admin.findOne({ username });
 
-        // If no admin is found, or if the password doesn't match, send error
-        if (!admin || !(await bcrypt.compare(password, admin.password))) {
+        // --- TEMPORARY LOGGING ---
+        if (!admin) {
+            console.log("Database Check: No admin found with that username.");
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        console.log("Database Check: Found admin user:", admin.username);
+        console.log("Database Stored Hash:", admin.password);
+        // --- END LOGGING ---
+
+        // Compare the provided password with the stored hash
+        const isMatch = await bcrypt.compare(password, admin.password);
+
+        // --- TEMPORARY LOGGING ---
+        console.log("Password Comparison Result (isMatch):", isMatch);
+        console.log("--------------------------");
+        // --- END LOGGING ---
+
+        if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
