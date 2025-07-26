@@ -9,8 +9,14 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
+// --- CORS CONFIGURATION ---
+// Define the allowed origin (your frontend's domain)
+const corsOptions = {
+  origin: 'https://oouhealth.com.ng'
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions)); // Use the configured CORS options
 app.use(express.json()); // for parsing application/json
 
 // Database Connection
@@ -25,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/students', require('./routes/studentRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
-app.use('/api/appointments', require('./routes/appointmentRoutes')); // Added appointments route
+app.use('/api/appointments', require('./routes/appointmentRoutes'));
 
 // Root endpoint
 app.get('/', (req, res) => {
